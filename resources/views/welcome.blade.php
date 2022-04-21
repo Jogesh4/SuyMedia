@@ -61,7 +61,7 @@
                       <h5>{{ $package->name }}</h5>
                         <div class="text-div">{{ $package->description }}.</div>
                            {{-- <a class="text-green pt-3" href="pricing.html">$ Starts at $<span>500</span>/month + $<span>250</span> set up</a> --}}
-                           <div class="row">
+                           <div class="row mt-3">
                                 <div class="col-6">
                                       <p class="text-green">Duration -: <span>{{ $package->period }}</span></p>
                                 </div>

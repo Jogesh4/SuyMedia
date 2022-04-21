@@ -86,7 +86,7 @@ class HomeController extends Controller
                $user = new User();
                $user->name = $request->username;
                $user->email = $request->email;
-               $user->password = Hash::make($request->password);
+               $user->password = $request->password;
                $user->save();
 
                return view('login');

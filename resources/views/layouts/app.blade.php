@@ -32,7 +32,7 @@
     <!--    Main Content-->
     <!-- ===============================================-->
 	
-	<header id="header" class="fixed-top d-flex align-items-center">
+	<header id="header mt-3" class="fixed-top d-flex align-items-center">
     <div class="container d-lg-flex d-md-flex text-center align-items-center justify-content-between">
 
       <div class="logo">
