@@ -49,30 +49,18 @@
           <div class="row">
              @if($packages->count() > 0)
              @foreach($packages as $package)
-                    <div class="col-lg-6 mb-2">
+             
+                    <div class="col-lg-6 mb-2"> 
                     <div class="product-item">
                       <div id="ribbon-container">
-                          <a href="product-page.html" id="ribbon">Best  Seller</a>
+                          <a href="" id="ribbon">Best  Seller</a>
                       </div>
-                      <div class="width-40"><img src="images/package/{{ $package->image }}" class="img-fluid" alt=""></div>
+                      <a href="/package/{{ $package->id }}"><div class="width-40"><img src="images/package/{{ $package->image }}" class="img-fluid" alt=""></div></a>
+                      <a href="/package/{{ $package->id }}" style="color:#000;">
                       <div class="width-60">
                       <h5>{{ $package->name }}</h5>
                         <div class="text-div">{{ $package->description }}.</div>
                            {{-- <a class="text-green pt-3" href="pricing.html">$ Starts at $<span>500</span>/month + $<span>250</span> set up</a> --}}
-                          @if(session()->has('user_id'))
-                          @if(!\Cart::session(session()->get('user_id'))->get($package->id))
-                          
-                            <button id="add-{{ $package->id }}" class="bttn" type="button" style=" border: 0; background: transparent;" onclick="add_cart({{ $package->id }})"><i class="fa fa-cart-arrow-down" style=" color: #ae0151; font-size: 20px; "></i></button>
-                            
-                            <button id="added-{{ $package->id }}" type="button" disabled class="bttn d-none" style=" border: 0; background: transparent;" ><i class="fa fa-cart-arrow-down" style=" color: #ccc; font-size: 20px; "></i></button>
-                            
-                          @else
-                              <button type="button" disabled class="bttn" style=" border: 0; background: transparent;" ><i class="fa fa-cart-arrow-down" style=" color: #ccc; font-size: 20px; "></i></button>
-                            @endif
-                          @else
-                            <a href="{{ route('login') }}" class="bttn"><i class="fa fa-cart-arrow-down" style=" color: #ae0151; font-size: 20px; "></i></a>
-                          @endif
-
                            <div class="row">
                                 <div class="col-6">
                                       <p class="text-green">Duration -: <span>{{ $package->period }}</span></p>
@@ -83,8 +71,11 @@
                            </div>
                            
                       </div>
+                      </a>
                       </div>
+                      
                   </div>
+             
               @endforeach
               @else 
                    <div class="text-center">

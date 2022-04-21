@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use App\Models\Category;
 use App\Models\Package;
 use App\Models\User;
+use App\Models\CartItem;
 
 class HomeController extends Controller
 {
@@ -34,7 +35,7 @@ class HomeController extends Controller
        }
         $categories = Category::where('status',1)->orderBy('id','asc')->get();
 
-        if(auth()->check()){
+        if(session()->has('user_id')){
             \Cart::clear();
             \Cart::session(session()->get('user_id'))->clear();
             $carts = CartItem::where(['user_id'=>session()->get('user_id'),'status' => 1])->get();
@@ -51,6 +52,30 @@ class HomeController extends Controller
     }
 
         return view('welcome',compact('packages','categories'));
+    }
+
+    public function view_package($id){
+
+        $package = Package::where('id',$id)->first();
+
+        if(session()->has('user_id')){
+            \Cart::clear();
+            \Cart::session(session()->get('user_id'))->clear();
+            $carts = CartItem::where(['user_id'=>session()->get('user_id'),'status' => 1])->get();
+            foreach($carts as $cart){
+                \Cart::session(session()->get('user_id'))->add(array(
+                    'id' => $cart->package_id,
+                    'name' => "fvfdv",
+                    'price' => 34,
+                    'quantity' => 1,
+                    'attributes' => array(),
+                    'associatedModel' => array()
+                ));
+            }
+    }
+
+        return view('items.view-item',compact('package'));
+        
     }
 
     public function signup(Request $request){

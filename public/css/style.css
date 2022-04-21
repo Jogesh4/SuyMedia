@@ -83,9 +83,20 @@ body {
     display: inline-block;
 }
 
+.top-button-cart {
+    cursor: pointer;
+    background: linear-gradient(180deg, #096b6e, #02989e);
+    position: relative;
+    border-radius: 50px;
+    overflow: hidden;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: inline-block;
+}
+
 .top-button-login span {
     color: #fff;
-    display: block;
+    /* display: block; */
     transform-origin: center left;
     transition: color 0.3s ease;
     position: relative;
@@ -878,6 +889,10 @@ a.btn-pink,
     -o-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+}
+
+.btn-pink:disabled {
+    background: #efbf8e;
 }
 
 .cart-subtotal {

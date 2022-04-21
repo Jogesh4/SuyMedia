@@ -20,6 +20,8 @@ use App\Http\Controllers\UserController;
 Auth::routes();
 
 Route::get('/', 'App\Http\Controllers\HomeController@index')->name('welcome');
+Route::get('/package/{id}', 'App\Http\Controllers\HomeController@view_package')->name('view_package');
+
 
 Route::view('/adminlogin', 'admin/adminlogin')->name('adminlogin');
 Route::post('/adminauth', 'App\Http\Controllers\Admin\DashboardController@adminauth')->name('adminauth');
@@ -43,7 +45,7 @@ Route::resource('/users', 'App\Http\Controllers\Admin\UserController');
 Route::get('/change_status/{type}/{id}/{status}', 'App\Http\Controllers\Admin\CategoryController@change_status')->name('change_status');
 
 
-Route::get('/user_dashboard', [UserController::class, 'dashboard'])->name('user_dashboard');
+Route::get('/user-dashboard', [UserController::class, 'dashboard'])->name('user-dashboard');
 Route::get('/user_order_list', [UserController::class, 'order_list'])->name('user_order_list');
 Route::get('/user_order_detail/{id}', [UserController::class, 'order_detail'])->name('user_order_detail');
 Route::get('/user_last_order', [UserController::class, 'last_order'])->name('user_last_order');

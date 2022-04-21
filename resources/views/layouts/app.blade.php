@@ -76,23 +76,20 @@
           @endphp
       @if (session()->has('user_id'))
       
-          <div>
-              <a class="top-button-login my-lg-0 my-md-0 my-4" href="/user-dashboard"><span><i class="fa fa-user-o" aria-hidden="true"></i> Dashboard</span></a>
-          </div>
+          <div class="d-flex">             
+          <a class="top-button-login my-lg-0 my-md-0 my-4" href="/user-dashboard"><span><i class="fa fa-user-o" aria-hidden="true"></i> Dashboard</span></a>
           <a class="text-1000" href="{{ route('cart.index') }}">
-          <div class="me-3">
-          <svg class="feather feather-shopping-cart" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="21" r="1"></circle>
-            <circle cx="20" cy="21" r="1"></circle>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-          </svg>
+          <div class="me-3 top-button-cart">
+          <i class="fa fa-cart-arrow-down h7 text-white"></i>
               @if(session()->has('user_id'))
-                <span id="cart_no">{{ $cartItems->count() }}</span>
+                <span id="cart_no" class="text-white">{{ $cartItems->count() }}</span>
               @else
-                   <span id="cart_no"></span>
+                   <span id="cart_no" class="text-white"></span>
               @endif
           </div>
         </a>
+        </div>
+          
       @else
          <div>
           <a class="top-button-login my-lg-0 my-md-0 my-4" href="/login"><span><i class="fa fa-user-o" aria-hidden="true"></i> Login</span></a>
