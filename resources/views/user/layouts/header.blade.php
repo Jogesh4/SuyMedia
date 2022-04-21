@@ -91,7 +91,7 @@
              <li class="menu-item">
               <a href="/user_last_order" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-box"></i>
-                <div data-i18n="Analytics">Order Detail</div>
+                <div data-i18n="Analytics">Last Order</div>
               </a>
             </li>
 			<li class="menu-item">

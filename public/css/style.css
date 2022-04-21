@@ -83,6 +83,57 @@ body {
     display: inline-block;
 }
 
+.btn-form_active {
+    width: auto;
+    padding: 10px;
+    background-color: #48b83e;
+    border: 1px solid #6f4eb9;
+    color: #fff;
+    display: inline-block;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.1px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    margin: 3px;
+    height: fit-content;
+}
+
+.btn-form_active:focus,
+.btn-form_active:hover {
+    background-color: #48b83e;
+    border: 1px solid #6f4eb9;
+    color: #fff;
+    outline: 0;
+    text-decoration: none;
+}
+
+.btn-form_inactive {
+    width: auto;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #fff;
+    color: rgb(34, 34, 34);
+    display: inline-block;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.1px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    margin: 3px;
+    height: fit-content;
+}
+
+.btn-form_inactive:focus,
+.btn-form_inactive:hover {
+    outline: 0;
+    background-color: #48b83e;
+    color: #fff;
+    text-decoration: none;
+}
+
 .top-button-cart {
     cursor: pointer;
     background: linear-gradient(180deg, #096b6e, #02989e);

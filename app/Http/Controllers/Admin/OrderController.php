@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Package;
 use App\Models\Order;
+use App\Models\User;
+use App\Models\OrderItem;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class OrderController extends Controller
@@ -88,5 +90,20 @@ class OrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function order_detail($id)
+    { 
+       if(!empty(session()->get('loginId'))){
+           $user = User::where('id',session()->get('loginId'))->first();
+           $order = Order::where('id',$id)->orderBy('id', 'DESC')->first();
+           $orderitems = OrderItem::where('order_id',$order->id)->get();
+           $type = 'item';
+           return view('admin.order-detail',compact('user','order','orderitems','type'));
+       }
+       else{
+            return redirect()->route('login');
+       }
+        
     }
 }

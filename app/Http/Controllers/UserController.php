@@ -56,7 +56,7 @@ class UserController extends Controller
            $order = Order::where('id',$id)->orderBy('id', 'DESC')->first();
            $orderitems = OrderItem::where('order_id',$order->id)->get();
 
-           return view('user.order_detail',compact('user','order','orderitems'));
+           return view('user.order-detail',compact('user','order','orderitems'));
        }
        else{
             return redirect()->route('login');

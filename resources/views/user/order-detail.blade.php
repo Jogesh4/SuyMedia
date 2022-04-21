@@ -35,7 +35,7 @@
                     @if(!empty($orderitems))
                           @foreach($orderitems as $item)
                           <div class="media">
-                            <div class="sq align-self-center "> <img class="img-fluid my-auto align-self-center mr-2 mr-md-4 pl-0 p-0 m-0" src="images/package/{{ $item->image }}" width="135" height="135"> </div>
+                            <div class="sq align-self-center "> <img class="img-fluid my-auto align-self-center mr-2 mr-md-4 pl-0 p-0 m-0" src="{{ asset('/images/package') . '/' . $item->image  }}" width="135" height="135"> </div>
                                 <div class="media-body my-auto text-end">
                                     <div class="row my-auto flex-column flex-md-row">
                                         <div class="col my-auto">

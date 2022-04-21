@@ -28,6 +28,7 @@ Route::post('/adminauth', 'App\Http\Controllers\Admin\DashboardController@admina
 Route::get('/admin-dashboard','App\Http\Controllers\Admin\DashboardController@dashboard')->name('admin-dashboard');
 Route::get('/adminlogout','App\Http\Controllers\Admin\DashboardController@adminlogout')->name('adminlogout');
 Route::get('/manage-order','App\Http\Controllers\Admin\OrderController@index')->name('manage-order');
+Route::get('/admin_order_detail/{id}', 'App\Http\Controllers\Admin\OrderController@order_detail')->name('admin_order_detail');
 
 
 Route::view('/login','login');

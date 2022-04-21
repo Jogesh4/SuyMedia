@@ -1,4 +1,4 @@
-@extends('user.layouts.header')
+@extends('admin.layouts.header')
 
 @section('title', 'Orders')
 
@@ -34,7 +34,7 @@
                               <td>{{ $order->order_no }}</a></td>
                               <td>{{ $order->user->name }}</td>
                               <td>{{ $order->items }}</td>
-                              <td><a href="{{ route('user_order_detail', $order->id) }}" class="btn btn-warning">View Details</a></td>
+                              <td><a href="{{ route('admin_order_detail', $order->id) }}" class="btn btn-warning">View Details</a></td>
                               <td><span class="failed">{{ $order->status }}</span></td>
                             
                             </tr>
