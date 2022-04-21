@@ -3,22 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryRequest;
-
+use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Package;
+use App\Models\User;
 
 class CategoryController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('admin.auth:admin');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -26,8 +17,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return view('admin.category.index', compact('categories'));
+
     }
 
     /**
@@ -37,57 +27,29 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return $this->edit(new Category());
+        if(session()->has('loginId')){
+            $categories = Category::orderBy('id','desc')->get();
+
+            return view('admin.add-category',compact('categories'));
+        }
+        else{
+             return redirect()->route('adminlogin');
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  App\Http\Requests\CategoryRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CategoryRequest $request)
+    public function store(Request $request)
     {
-        return $this->update($request, new Category());
-    }
+         $category = new Category();
+         $category->name = $request->name;
+         $category->save();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $category = Category::where('id', $id)->first();
-
-        return view('admin.category.create')->with('category',$category);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  App\Http\Requests\CategoryRequest  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(CategoryRequest $request, Category $category)
-    {
-        $category->name = $request->name;
-        $category->slug = $request->name;
-        $category->is_active = $request->is_active ?? 0;
-
-        if($request->hasfile('image')){
-              $imagePath = $request->file('image')->store('category_image', 'public');
-         }
-
-         $category->image = $imagePath;
-        
-        if($category->save()) {
-            return redirect()->back()->with('success', 'Category update successfully');
-        } else {
-            return redirect()->back()->with('failure', 'Failed to update category');
-        }
+         return redirect()->back()->with('success','Category created Successfully!!!');
     }
 
     /**
@@ -102,6 +64,29 @@ class CategoryController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -110,5 +95,26 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function change_status($type,$id,$status){
+          
+        if($type == 'package'){
+            $package = Package::where('id',$id)->first();
+            $package->status = $status;
+            $package->save();
+        }
+        else if($type == 'category'){
+            $category = Category::where('id',$id)->first();
+            $category->status = $status;
+            $category->save();
+        }
+        else if($type == 'user'){
+            $user = User::where('id',$id)->first();
+            $user->is_active = $status;
+            $user->save();
+        }
+
+        return back();
     }
 }

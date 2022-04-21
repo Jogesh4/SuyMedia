@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Models\Category;
+use App\Models\Package;
 use App\Models\Order;
-use App\Models\OrderItem;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class OrderController extends Controller
 {
@@ -17,9 +18,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::orderBy('id','desc')->get();
-        
-        return view('admin.order.index', compact('orders'));
+        $orders = Order::where('user_id',session()->get('loginId'))->orderBy('id', 'DESC')->get();
+
+        return view('admin.manage-order',compact('orders'));
     }
 
     /**
@@ -29,7 +30,7 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
+       
     }
 
     /**
@@ -40,7 +41,8 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+
     }
 
     /**
@@ -51,13 +53,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $type = 'item';
-        $order = Order::where('id',$id)->first();
-
-        $details = OrderItem::where('order_id',$id)->get();
-
-        return view('admin.order.view_order',compact('order','details','type'));
-
+        //
     }
 
     /**
@@ -68,11 +64,7 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        $order = Order::where('id',$id)->first();
-
-        $details = OrderItem::where('order_id',$id)->get();
-
-        return view('admin.order.edit_order',compact('order','details'));
+        //
     }
 
     /**
@@ -84,12 +76,7 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $order = Order::where('id',$id)->first();
-        $order->status = $request->payment_status;
-        $order->order_status = $request->order_status;
-        $order->save();
-
-        return redirect()->back()->with('success', 'Order Updated Successfully'); 
+        //
     }
 
     /**

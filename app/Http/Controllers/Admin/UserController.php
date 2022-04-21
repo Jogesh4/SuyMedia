@@ -4,12 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use App\Models\User;
-use App\Models\Address;
-use App\Models\Order;
-use App\Models\Review;
-
 
 class UserController extends Controller
 {
@@ -18,10 +13,11 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
-        return view('admin.user.index', compact('users'));
+        $users = User::orderBy('id','desc')->get();
+
+        return view('admin.manage-user',compact('users'));
     }
 
     /**
@@ -53,16 +49,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::where('id',$id)->first();
-
-        $addressess = Address::where('user_id',$id)->get();
-
-        $orders = Order::where('user_id',$id)->get();
-
-        $reviews = Review::where('user_id',$id)->get();
-
-
-        return view('admin.user.user-details',compact('user','addressess','orders','reviews'));
+        //
     }
 
     /**
@@ -73,7 +60,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.user.user-details');
+        //
     }
 
     /**

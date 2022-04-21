@@ -21,23 +21,20 @@ class UserController extends Controller
      */
     public function dashboard(Request $request)
     {
-       if(!empty(auth()->user()->id)){
-           $user = User::where('id',auth()->user()->id)->first();
-           $order = Order::where('user_id',auth()->user()->id)->orderBy('id', 'DESC')->first();
-           $orderitems = OrderItem::where('order_id',$order->id)->get();
+       if(session()->has('user_id')){
 
-           return view('user.dashboard',compact('user','order','orderitems'));
-       }
-       else{
-            return redirect()->route('login');
-       }
+            return view('user.dashboard');
+        }
+        else{
+             return redirect('/login');
+        }
         
     }
 
     public function profile(Request $request)
     {
-        if(!empty(auth()->user()->id)){
-           $user = User::where('id',auth()->user()->id)->first();
+        if(!empty(session()->get('user_id'))){
+           $user = User::where('id',session()->get('user_id'))->first();
            return view('user.profile',compact('user'));
        }
        else{
@@ -47,15 +44,15 @@ class UserController extends Controller
 
     public function order_list(Request $request)
     {
-           $orders = Order::where('user_id',auth()->user()->id)->orderBy('id', 'DESC')->get();
+           $orders = Order::where('user_id',session()->get('user_id'))->orderBy('id', 'DESC')->get();
 
-        return view('user.order_list',compact('orders'));
+        return view('user.my-orders',compact('orders'));
     }
 
     public function order_detail($id)
     { 
-       if(!empty(auth()->user()->id)){
-           $user = User::where('id',auth()->user()->id)->first();
+       if(!empty(session()->get('user_id'))){
+           $user = User::where('id',session()->get('user_id'))->first();
            $order = Order::where('id',$id)->orderBy('id', 'DESC')->first();
            $orderitems = OrderItem::where('order_id',$order->id)->get();
 
@@ -69,10 +66,12 @@ class UserController extends Controller
 
     public function last_order(Request $request)
     {
-      $order = Order::where('user_id',auth()->user()->id)->latest();
-      $orderitems = OrderItem::where('order_id',$order->id)->get();
+      $order = Order::where('user_id',session()->get('user_id'))->latest()->first();
 
-        return view('user.last_order',compact('order','orderitems'));
+      $orderitems = OrderItem::where('order_id',$order->id)->get();
+      $user = User::where('id',session()->get('user_id'))->first();
+
+        return view('user.order-detail',compact('order','orderitems','user'));
     }
 
     public function cart(Request $request)
@@ -82,14 +81,14 @@ class UserController extends Controller
 
      public function favorite(Request $request){
          
-        $favorites = Favorite::where('user_id',auth()->user()->id)->get();
+        $favorites = Favorite::where('user_id',session()->get('user_id'))->get();
 
         if(auth()->check()){
         \Cart::clear();
-         \Cart::session(auth()->user()->id)->clear();
-        $carts = CartItem::where(['user_id'=>auth()->user()->id,'status' => 1])->get();
+         \Cart::session(session()->get('user_id'))->clear();
+        $carts = CartItem::where(['user_id'=>session()->get('user_id'),'status' => 1])->get();
           foreach($carts as $cart){
-            \Cart::session(auth()->user()->id)->add(array(
+            \Cart::session(session()->get('user_id'))->add(array(
                 'id' => $cart->item_id,
                 'name' => "fvfdv",
                 'price' => 34,
