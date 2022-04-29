@@ -1,6 +1,15 @@
 @extends('admin.layouts.header')
 
-@section('title', 'dashboard')
+@php
+  $title = "Add Package";
+  $button_text = "Add";
+  if(!empty($package)) {
+    $title = "Edit Package";
+    $button_text = "Update";
+  }
+@endphp
+
+@section('title', $title)
 
 @section('content')
 
@@ -8,14 +17,20 @@
             <!-- Content -->
 
             <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span> Add Package</h4>
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span> {{ $title }}</h4>
 
               <div class="row">
                  <div class="col-xl-12 col-lg-12">
 				 <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-<form action="{{ route('packages.store') }}" method="post" enctype="multipart/form-data">
+
+ @if(!empty($package))  
+      <form action="" method="post" enctype="multipart/form-data">
+        @method('put')
+ @else        
+      <form action="{{ route('packages.store') }}" method="post" enctype="multipart/form-data">
+@endif
     @csrf
+
              @if(Session::has('success'))
                 <div class="alert alert-dismissable alert-success">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -35,8 +50,8 @@
          <div class="row"> 
           <div class="col-lg-6 col-md-6 col-12 mb-2">
             <label>Category</label>
-                  <select class="form-control" name="category">
-                        <option value="" selected hidden>Select Category</option>
+                  <select class="form-control" name="category" value="{{ !empty($package->category_id) ? $package->category_id : "" }}" >
+                        <option value="" hidden>Select Category</option>
                         @foreach($categories as $category)
                            <option value="{{ $category->id }}">{{ $category->name }}</option>
                          @endforeach
@@ -49,11 +64,11 @@
             <div class="row"> 
             <div class="col-lg-6 col-md-6 col-12 mb-2">
                   <label>Package Name</label>
-                  <input type="text" class="form-control" placeholder="Package Name" name="name">
+                  <input type="text" class="form-control" placeholder="Package Name" name="name" value="{{ !empty($package->name) ? $package->name : "" }}">
           </div>
           <div class="col-lg-6 col-md-6 col-12 mb-2">
             <label>Time Period</label>
-                  <select class="form-control" name="period">
+                  <select class="form-control" name="period" value="{{ !empty($package->period) ? $package->period : "" }}">
                         <option value="">Months / Year</option>
                         <option value="1 month">Per Month</option>
                         <option value="1 year">One Year</option>
@@ -66,13 +81,56 @@
           <div class="row"> 
             <label>Package Description</label>
             <div class="col-lg-12 col-md-12 col-12 mb-2">
-                <Textarea name="description" class="form-control" placeholder="Enter Package description" name="description"></Textarea>
+                <Textarea name="description" class="form-control" placeholder="Enter Package description" id="editor" value="{{ !empty($package->description) ? $package->description : "" }}"></Textarea>
             </div>
           </div>
-          <div class="row"> 
+
+           <div>
+        
+              <table class="table mt-3">
+                <thead>
+                  <tr>
+                    <th>Quantity</th>
+                    <th>Price(excl. tax)</th>
+                    {{-- <th>SKU</th> --}}
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="tbody">
+                  @if($variants->count() > 0)
+                    @foreach($variants as $variant)
+                     <tr>
+                          <td><input type="text" name="qty[]" class="form-control" value="{{ $variant->qty }}" placeholder="Enter qty" /></td>
+                          <td><input type="text" name="price[]" class="form-control" value="{{ $variant->price }}" placeholder="Enter price" /></td>
+                          <td>
+                          <button type="button" class="btn btn-danger btn-sm btn-remove-row">x</button>
+                          </td>
+                          <td>
+                          <button type="button" class="btn btn-info btn-sm btn-add-row">+</button>
+                          </td>
+                      </tr>
+                    @endforeach
+
+                  @else
+                      <tr>
+                        <td><input type="text" name="qty[]" class="form-control" placeholder="Enter qty" /></td>
+                        <td><input type="text" name="price[]" class="form-control" placeholder="Enter price" /></td>
+                        <td>
+                        <button type="button" class="btn btn-danger btn-sm btn-remove-row">x</button>
+                        </td>
+                        <td>
+                        <button type="button" class="btn btn-info btn-sm btn-add-row">+</button>
+                        </td>
+                        </tr>
+                  @endif
+                </tbody>
+              </table>
+            </div>
+
+          <div class="row mt-3"> 
             <div class="col-lg-6 col-md-6 col-12 mb-2">
               <label>Price</label>
-                <input type="text" class="form-control" placeholder="Price" name="price">
+                <input type="text" class="form-control" placeholder="Price" name="total" value="{{ !empty($package->price) ? $package->price : "" }}">
           </div>
           <div class="col-lg-6 col-md-6 col-12 mb-2">
             <label>Image</label>
@@ -86,7 +144,7 @@
     
 
                      <div class="d-flex justify-content-end">
-													<button type="submit" class="add-btn" >Add</button>
+													<button type="submit" class="add-btn" >{{ $button_text }}</button>
 												</div>
 </div>          
                                
@@ -99,78 +157,7 @@
 
                        
                     </div>
-						<div class="card shadow mb-4">
-                               <div class="card-header py-3">
-                                    
-									<div class="d-flex justify-content-between">
-												<!--begin::User-->
-												<div class="d-flex flex-column">
-													<h6 class="m-0 font-weight-bold ">Package List</h6>
-												</div>
-												<!--end::User-->
-												
-											</div>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class=" pb-2 table-responsive">
-									               <table class="table">
-                                            <thead>
-                                              <tr>
-                                                <th scope="col">S.no</th>
-                                                <th scope="col">Image</th>
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Period</th>
-                                                <th scope="col">Price</th>
-                                                <th scope="col">Status</th>
-                                                <th scope="col" class="text-end">Action</th>
-                                              </tr>
-                                              
-                                            </thead>
-
-                                  <tbody>
-                                  @if($packages->count() > 0)
-                                              @foreach($packages as $package)
-                                                <tr>
-                                                     <td>{{ $loop->iteration }}</td>
-                                                     <td><img class="img-fluid" src="/images/package/{{$package->image}}" width="30%" height="10%"></td>
-                                                     <td>{{ $package->name }}</td>
-                                                     <td>{{ $package->period }}</td>
-                                                     <td>Rs.{{ $package->price }}</td>
-                                                     <td>@if($package->status)
-                                                            @php $statusBtn = '<a title="Deactivate" href="'. route('change_status', ['type' => 'package', 'id' => $package->id, 'status' => '0']) .'" class="btn btn-danger btn-sm"><i class="fas fa-solid fa-user-times"></i></a>' @endphp
-                                                            Active
-                                                        @else
-                                                            @php $statusBtn = '<a title="Activate" href="'. route('change_status', ['type' => 'package', 'id' => $package->id, 'status' => '1']) .'" class="btn btn-success btn-sm"><i class="fa fa-user-plus" aria-hidden="true"></i></a>' @endphp
-                                                            Deactive
-                                                        @endif</td>
-                                                        <td>
-                                                        {!! $statusBtn !!}
-                                                        {{-- <span class="btn btn-warning" onclick="edit_sub_category({{ $package->id }})"><i class="fa fa-pencil-alt" aria-hidden="true"></i></span> --}}
-                                                        <!-- <button class="btn btn-warning" ><i class="fa fa-plus" aria-hidden="true"></i></button> -->
-                                                    </td>
-                                                </tr>
-                                               @endforeach
-                                              @else
-                                                  <div class="text-center">
-                                                       <h3>No Package Found</h3>
-                                                  </div>
-                                              @endif
-
-
-                                  </tbody>                                        
-                                </table>
-                                       
-                                   
-                                    
-                               
-                            </div>
-                        </div>
-                        <!-- Area -->
-                       
-
-                       
-                    </div>
+						
 					
 					
 </div>
@@ -191,3 +178,59 @@
           </div>
 
 @endsection
+@section('script')
+<script src="https://cdn.tiny.cloud/1/qagffr3pkuv17a8on1afax661irst1hbr4e6tbv888sz91jc/tinymce/5/tinymce.min.js"></script>
+
+    <script>
+        tinymce.init({
+            selector:'#editor',
+            menubar: false,
+            statusbar: false,
+            plugins: 'autoresize anchor autolink charmap code codesample directionality fullpage help hr image imagetools insertdatetime link lists media nonbreaking pagebreak preview print searchreplace table template textpattern toc visualblocks visualchars',
+            toolbar: 'h1 h2 bold italic strikethrough blockquote bullist numlist backcolor | link image media | removeformat help fullscreen ',
+            skin: 'bootstrap',
+            toolbar_drawer: 'floating',
+            min_height: 200,           
+            autoresize_bottom_margin: 16,
+            setup: (editor) => {
+                editor.on('init', () => {
+                    editor.getContainer().style.transition="border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out"
+                });
+                editor.on('focus', () => {
+                    editor.getContainer().style.boxShadow="0 0 0 .2rem rgba(0, 123, 255, .25)",
+                    editor.getContainer().style.borderColor="#80bdff"
+                });
+                editor.on('blur', () => {
+                    editor.getContainer().style.boxShadow="",
+                    editor.getContainer().style.borderColor=""
+                });
+            }
+        });
+    </script>
+
+    <script>
+
+          $(document).on('click', '.btn-add-row', function() {
+            // $(this).hide();
+            $("#tbody").append(`<tr>
+              <td><input type="text" name="qty[]" class="form-control" placeholder="Enter qty" /></td>
+                <td><input type="text" name="price[]" class="form-control" placeholder="Enter price" /></td>
+                <td>
+                        <button type="button" class="btn btn-danger btn-sm btn-remove-row">x</button>
+                        </td>
+                        <td>
+                        <button type="button" class="btn btn-info btn-sm btn-add-row">+</button>
+                        </td>
+              </tr>`);
+          });
+
+          $(document).on("click", ".btn-remove-row", function(){
+            $(this).parent().parent().remove();
+          });
+
+    </script>
+
+    @endsection
+
+
+

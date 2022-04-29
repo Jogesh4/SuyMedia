@@ -7,7 +7,8 @@
       
       <section class="my-7">
         <div class="container">
-    <div class="row d-flex justify-content-center">
+            @php echo html_entity_decode($package->description) @endphp
+    <div class="row d-flex justify-content-center mt-3">
         <div class="col-md-12">
             <div class="card">
                 <div class="row">
@@ -28,7 +29,8 @@
                                     {{-- <div class="ml-2"> <small class="dis-price">$59</small> <span>40% OFF</span> </div> --}}
                                 </div>
                             </div>
-                            <p class="about">{{ $package->description }}.</p>
+                            {{-- <html>{{ html_entity_decode($package->description) }}.</html> --}}
+                            
                             {{-- <div class="sizes mt-5">
                                 <h6 class="text-uppercase">Size</h6> <label class="radio"> <input type="radio" name="size" value="S" checked> <span>S</span> </label> <label class="radio"> <input type="radio" name="size" value="M"> <span>M</span> </label> <label class="radio"> <input type="radio" name="size" value="L"> <span>L</span> </label> <label class="radio"> <input type="radio" name="size" value="XL"> <span>XL</span> </label> <label class="radio"> <input type="radio" name="size" value="XXL"> <span>XXL</span> </label>
                             </div> --}}

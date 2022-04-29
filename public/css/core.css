@@ -235,6 +235,14 @@ mark,
     background-color: #fcf8e3;
 }
 
+.tox-notification--warning {
+    display: none!important;
+}
+
+.tox-notification {
+    display: none!important;
+}
+
 .btn-form_active {
     width: auto;
     padding: 10px;

@@ -66,6 +66,8 @@
 
     <script src="{{asset('js/config.js')}}"> </script>
 
+    
+
   </head>
 
   <body>
@@ -111,9 +113,9 @@
             </li>
 
             <li class="menu-item">
-              <a href="/packages/create" class="menu-link">
+              <a href="/packages" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-box"></i>
-                <div data-i18n="Analytics">Create Package</div>
+                <div data-i18n="Analytics">Manage Package</div>
               </a>
             </li>
 
@@ -278,6 +280,8 @@
 
 
     <script src="{{asset('js/dashboards-analytics.js')}}"> </script>
+
+    @yield('script')
     
   </body>
 </html>
